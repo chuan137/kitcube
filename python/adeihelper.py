@@ -41,19 +41,18 @@ def adei_timestamp(adeitimestr):
 
 def query_csv(url, username=None, password=None):
     request = urllib.Request(url)
-    base64string = base64.encodestring('%s:%s' % ( username, password ) )
-    request.add_header("Authorization", "Basic %s" % base64string)
+    if username and password:
+        base64string = base64.encodestring('%s:%s' % ( username, password ) )
+        request.add_header("Authorization", "Basic %s" % base64string)
     fp = urllib.urlopen(request)
     resp = csvparser(fp)
-    #stamps = map(adei_timestamp, resp[0][1:])
-    #data = [dict(zip(('name', 'values'), [s[0], s[1:]])) for s in resp[1:]]
     return resp
-    #return stamps, data
 
 def query_xml(url, username=None, password=None):
     request = urllib.Request(url)
-    base64string = base64.encodestring('%s:%s' % ( username, password ) )
-    request.add_header("Authorization", "Basic %s" % base64string)
+    if username and password:
+        base64string = base64.encodestring('%s:%s' % ( username, password ) )
+        request.add_header("Authorization", "Basic %s" % base64string)
     fp = urllib.urlopen(request)
     return xmlparser(fp)
  

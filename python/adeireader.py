@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from adeihelper import query_csv, query_xml, adei_timestamp
 
-DEBUG = 0
+DEBUG = 1
 
 
 class AdeiError(Exception):
@@ -22,7 +22,7 @@ class ADEIReader(object):
 
         self._groups = []
         self._sensors = {}
-        self.update_sensor_list()
+        self.update_group_list()
 
     def qurl(self, qtype, **kargs):
         url = self.host
@@ -40,39 +40,32 @@ class ADEIReader(object):
         kargs['resample'] = kargs.get('resample') or '0'
         for k, v in kargs.iteritems():
             url += '&' + k + '=' + v
+
+        if DEBUG:
+            print url
         return url
 
-    def query_group(self, g=None, **kwargs):
-        if g:
-            return self._sensors.get(g)
-        else:
-            return self._groups
-
-    def query_sensor(self, s=None, **kwargs):
-        if s:
-            print 'query sensor name not implemented'
-            pass
-        else:
-            return self._sensors
-
-    def update_sensor_list(self):
+    def update_group_list(self):
         url = self.qurl('group')
         self._groups = query_xml(url)
-        for g in self._groups:
-            g = g['db_group']
-            url = self.qurl('sensor', db_group=g)
-            self._sensors[g] = { v['name']:v['value'] for v in  query_xml(url) }
+
+    def update_sensor_list(self, groupname, force=False):
+        url = self.qurl('sensor', db_group=groupname)
+        self._sensors[groupname] = { v['name']:v['value'] for v in  query_xml(url) }
 
     def query_data(self, group, sensors):
         ' Fetch data from ADEI server. '
+        if not isinstance(sensors, list):
+            sensors = [ sensors ]
+        if group not in self._sensors:
+            self.update_sensor_list(group)
+
         try:
             masks = map(int, sensors)
-        except:  
-            if group in self._sensors:
-                masks = map(self._sensors.get(group).get, sensors)
-                masks = map(int, masks)
-            else:
-                masks = []
+        except:
+            masks = map(self._sensors.get(group).get, sensors)
+            masks = map(int, masks)
+
         if masks:
             masks = sorted(masks)
             try:
@@ -95,4 +88,8 @@ class ADEIReader(object):
 #            print 'retrieve sensor list'
 #            self._sensors = self.get_sensor_list()
         return self._sensors
+
+    @property
+    def groups(self):
+        return self._groups
 

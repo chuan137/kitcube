@@ -19,7 +19,8 @@ def read_server_config(configfile, servername):
     if config.has_section(servername):
         h = config.get(servername, 'DB_HOST')
         s = config.get(servername, 'DB_SERVER')
-        return h, s
+        db = config.get(servername, 'DB_NAME')
+        return h, s, db
 
 
 def read_sensor_config(configfile, sensorname):
@@ -29,8 +30,8 @@ def read_sensor_config(configfile, sensorname):
 
     if config.has_section(sensorname):
         g = config.get(sensorname, 'group')
-        m = config.get(sensorname, 'method')
-        return g
+        m = config.get(sensorname, 'name')
+        return g, m
 
 
 def parseConfig(configfile, sensor_):
