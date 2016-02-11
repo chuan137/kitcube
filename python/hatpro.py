@@ -1,15 +1,39 @@
 import re
 import os
+import sys
 import ConfigParser
 import adeitools as adei
 from adeitools import DEBUG_
 import simplejson as json
 
 device_ = 'HATPRO'
-deviceConfig = 'hatpro.ini'
-serverConfig = 'server.ini'
+deviceConfig = '../config/hatpro.ini'
+serverConfig = '../config/server.ini'
 
-def parseConfig(sensor_):
+
+def read_server_config(configfile, servername):
+
+    config = ConfigParser.ConfigParser()
+    config.read(configfile)
+
+    if config.has_section(servername):
+        h = config.get(servername, 'DB_HOST')
+        s = config.get(servername, 'DB_SERVER')
+        return h, s
+
+
+def read_sensor_config(configfile, sensorname):
+
+    config = ConfigParser.ConfigParser()
+    config.read(configfile)
+
+    if config.has_section(sensorname):
+        g = config.get(sensorname, 'group')
+        m = config.get(sensorname, 'method')
+        return g
+
+
+def parseConfig(configfile, sensor_):
     # read server and sensor info from configuration
     # find sensor and group, then initialize adei server
     # there should be only one matched sensor, check?
@@ -24,6 +48,7 @@ def parseConfig(sensor_):
     servers = [dict(config._sections[a]) 
             for a in config.sections() if re.match('^server', a)]
 
+    print sensors
     try:
         sensor = [s for s in sensors if s['id'] == sensor_ ]
         sensor[0]
