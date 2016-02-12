@@ -44,9 +44,13 @@ def main():
 
     window = '%d-%d' % (ts_0, laststamp)
     fetched_data = adei.query_data(groupname, sensorfullname, window=window, resample=60)
+    fetched_data = {'timestamp': fetched_data['timestamp'], \
+                    'data': { k:v for k,v in fetched_data.iteritems() if k != 'timestamp'}}
+
+    print fetched_data
+
 
     filename = filename.format(servername=servername, sensorname=sensorname, timestamp=ts_0)
-
     with open(os.path.join(output_path, filename), 'w') as f:
         json.dump(fetched_data, f)
 
