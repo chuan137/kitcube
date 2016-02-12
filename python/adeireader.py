@@ -59,26 +59,29 @@ class ADEIReader(object):
         '''
         if not isinstance(sensors, list):
             sensors = [ sensors ]
+
         if group not in self._sensors:
             self.update_sensor_list(group)
 
+        for s in sensors:
+            if s not in self._sensors[group]:
+                raise AdeiError('sensor name `%s` not found in group %s' % (s, group))
+
         masks = map(self._sensors.get(group).get, sensors)
         masks = map(int, masks)
-
-        if len(masks) > 0:
-            masks = sorted(masks)
-        else:
-            raise AdeiError('masks is empty')
+        masks = sorted(masks)
 
         data = self._query(group, *masks, **kwargs)
 
         len_data = len(data[0]) - 1
         types = [('timestamp', 'u4')] + [(d[0], 'f4') for d in data[1:]]
         res = numpy.zeros(len_data, dtype=types)
-        res['timestamp'] = map(adei_timestamp, data[0][1:])
-        for _i, _t in enumerate(types[1:]):
-            fieldname = _t[0]
-            res[fieldname] = map(float, data[_i+1][1:])
+
+        for _i, (fieldname, _) in enumerate(types):
+            if fieldname == 'timestamp':
+                res[fieldname] = map(adei_timestamp, data[_i][1:])
+            else:
+                res[fieldname] = map(float, data[_i][1:])
 
         return res
 
