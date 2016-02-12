@@ -21,7 +21,12 @@ def read_sensor_config(configfile, sensorname):
     if config.has_section(sensorname):
         g = config.get(sensorname, 'group')
         m = config.get(sensorname, 'name')
-        return g, m
+        try:
+            n = config.get(sensorname, 'axis2_length')
+            n = int(n)
+        except ConfigParser.NoOptionError:
+            n = 1
+        return g, m, n
 
 #
 # def parseConfig(configfile, sensor_):

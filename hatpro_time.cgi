@@ -21,22 +21,30 @@ def main():
     servername = 'HEADS'
     sensorname = 'L2A.ATM.WAT.VAP.CNT'
     sensorname = 'L2A.ATM.LIQ.WAT.CNT'
+    sensorname = 'L1B.BRIGHT.TEMP'
 
     filename = 'hatpro_time_{servername}_{sensorname}_{timestamp}.json'
     output_path = './cache'
 
+    # parse config
     adeihost, adeiserver, dbname = read_server_config(config_server, servername)
-    groupname, sensor_readable_name = read_sensor_config(config_sensor, sensorname)
+    groupname, sensor_readable_name, axis2_length = read_sensor_config(config_sensor, sensorname)
 
-    if sensor_readable_name:
-        sensorfullname = ' '.join([sensorname, sensor_readable_name])
-    else:
-        sensorfullname = sensorname
-
+    # initialize adei
     adei = ADEIReader(adeihost, adeiserver, dbname)
-
     if groupname not in adei.sensors:
         adei.update_sensor_list(groupname)
+
+    if axis2_length == 1:
+        if sensor_readable_name:
+            sensorfullname = ' '.join([sensorname, sensor_readable_name])
+        else:
+            sensorfullname = sensorname
+    else:
+        sensorfullname = []
+        for i in range(axis2_length):
+            s = '%s.%03d' % (sensorname, i)
+            sensorfullname.append(' '.join([s, sensor_readable_name]))
 
     fetched_data = adei.query_data(groupname, sensorfullname)
     laststamp = fetched_data['timestamp'][-1]
