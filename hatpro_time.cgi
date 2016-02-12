@@ -5,7 +5,7 @@ import cgi, cgitb
 import numpy as np
 import json
 from python.adeireader import ADEIReader
-from python.adeihelper import start_of_day, NumpyEncoder
+from python.adeihelper import start_of_day
 from python.hatpro import read_server_config, read_sensor_config
 
 config_server = './config/server.ini'
@@ -48,7 +48,7 @@ def main():
     filename = filename.format(servername=servername, sensorname=sensorname, timestamp=ts_0)
 
     with open(os.path.join(output_path, filename), 'w') as f:
-        json.dump(fetched_data, f, cls=NumpyEncoder)
+        json.dump(fetched_data, f)
 
 
 if __name__ == "__main__":

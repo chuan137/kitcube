@@ -72,17 +72,17 @@ class ADEIReader(object):
         masks = sorted(masks)
 
         data = self._query(group, *masks, **kwargs)
+        data = self._serialize(data)
 
-        len_data = len(data[0]) - 1
-        types = [('timestamp', 'u4')] + [(d[0], 'f4') for d in data[1:]]
-        res = numpy.zeros(len_data, dtype=types)
+        return data
 
-        for _i, (fieldname, _) in enumerate(types):
-            if fieldname == 'timestamp':
-                res[fieldname] = map(adei_timestamp, data[_i][1:])
+    def _serialize(self, data):
+        res = dict()
+        for i in range(len(data)):
+            if data[i][0] == 'Date/Time':
+                res['timestamp'] = map(adei_timestamp, data[i][1:])
             else:
-                res[fieldname] = map(float, data[_i][1:])
-
+                res[data[i][0]] = list(data[i][1:])
         return res
 
     def _query(self, group, *masks, **kwargs):

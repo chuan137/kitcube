@@ -84,7 +84,6 @@ class NumpyEncoder(json.JSONEncoder):
         # Let the base class default method raise the TypeError
         return json.JSONEncoder(self, obj)
 
-
 def json_numpy_obj_hook(dct):
     """Decodes a previously encoded numpy ndarray with proper shape and dtype.
 
