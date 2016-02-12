@@ -41,6 +41,11 @@ def adei_timestamp(adeitimestr):
     timestamp = calendar.timegm(timestamp.timetuple())
     return timestamp
 
+def utc_timestamp(year, month, day):
+    d = datetime.datetime(year, month, day)
+    timestamp = calendar.timegm(d.timetuple())
+    return timestamp
+
 def start_of_day(timestamp, tz='UTC'):
     hour, min, sec = datetime.datetime.utcfromtimestamp(timestamp).strftime("%H %M %S").split()
     hour, min, sec = map(int, [hour, min, sec])

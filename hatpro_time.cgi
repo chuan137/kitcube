@@ -5,7 +5,7 @@ import cgi, cgitb
 import numpy as np
 import json
 from python.adeireader import ADEIReader
-from python.adeihelper import start_of_day
+from python.adeihelper import start_of_day, utc_timestamp
 from python.hatpro import read_server_config, read_sensor_config
 
 config_server = './config/server.ini'
@@ -19,10 +19,13 @@ def main():
     #date_ = reqparams["date"].value
 
     servername = 'HEADS'
+    sensorname = 'L1B.BRIGHT.TEMP.IR'
     sensorname = 'L2A.ATM.WAT.VAP.CNT'
     sensorname = 'L2A.ATM.LIQ.WAT.CNT'
     sensorname = 'L1B.BRIGHT.TEMP'
-    sensorname = 'L1B.BRIGHT.TEMP.IR'
+
+    date = ''
+    date = '2014-12-6'
 
 
     filename = 'hatpro_time_{servername}_{sensorname}_{timestamp}.json'
@@ -48,11 +51,20 @@ def main():
             s = '%s.%03d' % (sensorname, i)
             sensorfullname.append(' '.join([s, sensor_readable_name]))
 
-    fetched_data = adei.query_data(groupname, sensorfullname)
-    laststamp = fetched_data['timestamp'][-1]
-    ts_0 = start_of_day(laststamp)
-
-    window = '%d-%d' % (ts_0, laststamp)
+    # decide time window
+    if date == '':
+        # fetch last data to decide date
+        fetched_data = adei.query_data(groupname, sensorfullname)
+        laststamp = fetched_data['timestamp'][-1]
+        ts_0 = start_of_day(laststamp)
+    	window = '%d-%d' % (ts_0, laststamp)
+    else:
+        # form given date
+        year, month, day = map(int ,date.split('-'))
+        ts_0 = utc_timestamp(year, month, day)
+    	window = '%d-%d' % (ts_0, ts_0+86400)
+       
+    # fetch data
     fetched_data = adei.query_data(groupname, sensorfullname, window=window, resample=60)
 
     # format data
