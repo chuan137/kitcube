@@ -1,16 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from adeihelper import query_csv, query_xml, adei_timestamp
+import numpy
+from adeihelper import query_csv, query_xml, adei_timestamp, print_exc
 
 DEBUG = 1
 
 
 class AdeiError(Exception):
     'not implemented'
-    def __init__(self, message, errors):
-
+    def __init__(self, message):
         super(AdeiError, self).__init__(message)
-        self.errors = errors
 
 
 class ADEIReader(object):
@@ -24,7 +23,7 @@ class ADEIReader(object):
         self._sensors = {}
         self.update_group_list()
 
-    def qurl(self, qtype, **kargs):
+    def qurl(self, qtype, **kwargs):
         url = self.host
 
         if qtype == 'get':
@@ -34,12 +33,13 @@ class ADEIReader(object):
         elif qtype == 'sensor':
             url = url + 'list.php?target=items'
 
-        kargs['db_server'] = self.server
-        kargs['db_name'] = self.db
-        kargs['window'] = kargs.get('window') or '-1'
-        kargs['resample'] = kargs.get('resample') or '0'
-        for k, v in kargs.iteritems():
-            url += '&' + k + '=' + v
+        kwargs['db_server'] = self.server
+        kwargs['db_name'] = self.db
+        kwargs['window'] = kwargs.get('window') or '-1'
+        kwargs['resample'] = kwargs.get('resample') or '0'
+
+        for k, v in kwargs.iteritems():
+            url += '&' + k + '=' + str(v)
 
         if DEBUG:
             print url
@@ -53,33 +53,38 @@ class ADEIReader(object):
         url = self.qurl('sensor', db_group=groupname)
         self._sensors[groupname] = { v['name']:v['value'] for v in  query_xml(url) }
 
-    def query_data(self, group, sensors):
-        ' Fetch data from ADEI server. '
+    def query_data(self, group, sensors, **kwargs):
+        '''
+        Fetch data from ADEI server
+        '''
         if not isinstance(sensors, list):
             sensors = [ sensors ]
         if group not in self._sensors:
             self.update_sensor_list(group)
 
-        try:
-            masks = map(int, sensors)
-        except:
-            masks = map(self._sensors.get(group).get, sensors)
-            masks = map(int, masks)
+        masks = map(self._sensors.get(group).get, sensors)
+        masks = map(int, masks)
 
-        if masks:
+        if len(masks) > 0:
             masks = sorted(masks)
-            try:
-                data = self._query(group, *masks)
-                data[0] = ('timestamp', adei_timestamp(data[0][1]))
-            except:
-                data = []
         else:
-            data = []
-        return data
+            raise AdeiError('masks is empty')
 
-    def _query(self, group, *masks):
+        data = self._query(group, *masks, **kwargs)
+
+        len_data = len(data[0]) - 1
+        types = [('timestamp', 'u4')] + [(d[0], 'f4') for d in data[1:]]
+        res = numpy.zeros(len_data, dtype=types)
+        res['timestamp'] = map(adei_timestamp, data[0][1:])
+        for _i, _t in enumerate(types[1:]):
+            fieldname = _t[0]
+            res[fieldname] = map(float, data[_i+1][1:])
+
+        return res
+
+    def _query(self, group, *masks, **kwargs):
         masks = ','.join(map(str, masks))
-        url = self.qurl('get', db_group=group, db_mask=masks)
+        url = self.qurl('get', db_group=group, db_mask=masks, **kwargs)
         return query_csv(url)
 
     @property
