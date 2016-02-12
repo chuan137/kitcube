@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import python.adeitools as adei
+from python.adeireader import ADEIReader
 from python.hatpro import read_server_config, read_sensor_config
 
 config_server = './config/server.ini'
@@ -10,18 +10,27 @@ sensorname = 'L2A.ATM.WAT.VAP.CNT'
 
 def test_config():
 
-    host, server = read_server_config(config_server, servername)
+    host, server, dbname = read_server_config(config_server, servername)
     assert host != '' and server != ''
 
-    group = read_sensor_config(config_sensor, sensorname)
+    group, sensorfullname = read_sensor_config(config_sensor, sensorname)
     assert group == 'Data_080_RPG_L2A'
+    assert sensorfullname == 'L2A.ATM.WAT.VAP.CNT atmosphere_water_vapor_content'
 
 
 def test_adei_init():
 
-    host, server = read_server_config(config_server, servername)
-    adei.adeiReader()
-    assert 1
+    host, server,dbname = read_server_config(config_server, servername)
+    adei = ADEIReader(host, server, dbname)
+
+    adei_groups = adei.groups
+    assert len(adei_groups) > 0
+
+    g =  adei_groups[0]['db_group']
+    adei.update_sensor_list(g)
+    sensors = adei.sensors[g]
+    assert len(sensors) > 0
+
 
 
 
