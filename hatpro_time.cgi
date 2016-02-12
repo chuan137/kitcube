@@ -22,6 +22,8 @@ def main():
     sensorname = 'L2A.ATM.WAT.VAP.CNT'
     sensorname = 'L2A.ATM.LIQ.WAT.CNT'
     sensorname = 'L1B.BRIGHT.TEMP'
+    sensorname = 'L1B.BRIGHT.TEMP.IR'
+
 
     filename = 'hatpro_time_{servername}_{sensorname}_{timestamp}.json'
     output_path = './cache'
