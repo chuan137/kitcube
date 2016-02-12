@@ -1,3 +1,6 @@
+var Base64 = require('./base64');
+var THREE = require('three');
+
 function formatDate(date) {
     var dd = date.getDate()
     if ( dd < 10 ) dd = '0' + dd;
@@ -8,42 +11,62 @@ function formatDate(date) {
     return dd+'.'+mm+'.'+yy;
 }
 
+function utc_start_of_day_timestamp(now) {
+    if (typeof now === "undefined") {
+	now = new Date;
+        var ts = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+    }
+    else {
+        now = now.split("-");
+        var year = parseInt(now[0]);
+        var month = parseInt(now[1]) - 1;
+        var day = parseInt(now[2]);
+        var ts = Date.UTC(year, month, day);
+    } 
+    return ts/1000;
+}
+
 function plot_time(event) {
     var panelname = $(this).parents('div .ui-widget-content').attr('id');
     var timekey = $('#' + panelname + ' input[type=radio]:checked').val();
     var id = $(this).attr('id');
     var title = $(this).attr('title');
-    console.log(title);
     var targetdiv = event.data.target;
     var targetdivwidth = parseFloat($(targetdiv).css('width'));
     var unit = $(this).attr('unit');
 
+    var timestamp = utc_start_of_day_timestamp(event.data.date);
+    var data_file = ['hatpro_time', event.data.campaign, id,  timestamp].join('_') + '.json';
+
+    console.log(id);
+    console.log(title);
+    console.log(panelname, timekey);
+    console.log(targetdiv, targetdivwidth, unit);
+    console.log(data_file);
 
     $.ajax({
-        url: 'cache/' + panelname + '.' + id + '.' + timekey + '.json',
+        url: 'cache/' + data_file,
         method: 'post',
-        dataType: 'json',
-        data: {timekey: timekey, id: id},
-        success: plotdata
-    });
+        dataType: 'json'
+    }).done(function (data) {
 
-    function plotdata(data) {
-        var dataset = [];
-        var rows = data['data'].length;
+	var timestamp = data.timestamp;
+	var values = data.data;
 
-        var factor = Math.floor(data['time'].length/targetdivwidth/3 + 0.5);
+        var factor = Math.floor(timestamp.length/targetdivwidth/3 + 0.5);
         if (factor == 0) factor = 1;
-        console.log(factor);
 
+        var dataset = [];
+        var rows = values.length;
         for (var w = 0; w < rows; w++) {
           var temp = [];
-          for (var i = 0; i < data['time'].length; i+=factor) {
-              temp.push([data['time'][i]*1000, data['data'][w][i]]);
+          for (var i = 0; i < timestamp.length; i+=factor) {
+              temp.push([timestamp[i]*1000, values[w][i]]);
           }
           dataset.push(temp);
         }
 
-        var d0 = new Date(data['time'][0]*1000);
+        var d0 = new Date(timestamp[0]*1000);
         var dmin = Date.UTC(d0.getUTCFullYear(), d0.getUTCMonth(), d0.getUTCDate(), 0, 0, 0);
         var dmax = dmin + 86400000;
         var hour = 3600000; 
@@ -96,7 +119,7 @@ function plot_time(event) {
 
         $('div #'+panelname).data('img1', img);
         $('div #'+panelname).data('title1', title);
-    }
+    });
 }
 
 function plot_contour() {

@@ -31,26 +31,26 @@ function switchHighlight() {
         
 module.exports = function() {
 
-    $('#HATPRO #timeseries ul').append(sensor('L2A.ATM.WAT.VAP.CNT', 'water-vapor content', 'kg m-2').outerHTML);
-    $('#HATPRO #timeseries ul').append(sensor('L2A.ATM.LIQ.WAT.CNT', 'liquid-water content', 'g m-2').outerHTML);
-    $('#HATPRO #timeseries ul').append(sensor('L1B.BRIGHT.TEMP', 'brightness temperature', 'K').outerHTML);
-    $('#HATPRO #timeseries ul').append(sensor('L1B.BRIGHT.TEMP.IR', 'brightness temperature IR', 'C').outerHTML);
+    $('#HATPRO #timeseries ul').append(sensor('L2A.ATM.WAT.VAP.CNT', 'atmosphere_water_vapor_content', 'kg m-2').outerHTML);
+    $('#HATPRO #timeseries ul').append(sensor('L2A.ATM.LIQ.WAT.CNT', 'atmosphere_liquid_water_content', 'g m-2').outerHTML);
+    $('#HATPRO #timeseries ul').append(sensor('L1B.BRIGHT.TEMP', 'brightness_temperature', 'K').outerHTML);
+    $('#HATPRO #timeseries ul').append(sensor('L1B.BRIGHT.TEMP.IR', 'brightness_temperature_IR', 'C').outerHTML);
     $('#HATPRO #timeseries ul li').first().addClass('highlight');
 
-    $('#HATPRO #profile ul').append(sensor('L2C.AIR.POT.TEM.PRF', 'air potential temperature', 'm', 'K').outerHTML);
-    $('#HATPRO #profile ul').append(sensor('L2C.REL.HUM.PRF', 'relative humidty profiling', 'm', '%').outerHTML);
-    $('#HATPRO #profile ul').append(sensor('L2A.ATM.WAT.VAP.CNT.PRF', 'water-vapor content', 'azimuth angle', 'kg m-2').outerHTML);
-    $('#HATPRO #profile ul').append(sensor('L2A.ATM.LIQ.WAT.CNT.PRF', 'liquid-water content', 'azimuth angle', 'g m-2').outerHTML);
+    $('#HATPRO #profile ul').append(sensor('L2C.AIR.POT.TEM.PRF', 'air_potential_temperature_profile', 'm', 'K').outerHTML);
+    $('#HATPRO #profile ul').append(sensor('L2C.REL.HUM.PRF', 'relative_humidty_profile', 'm', '%').outerHTML);
+    $('#HATPRO #profile ul').append(sensor('L2A.ATM.WAT.VAP.CNT.PRF', 'atmosphere_water_vapor_content', 'azimuth angle', 'kg m-2').outerHTML);
+    $('#HATPRO #profile ul').append(sensor('L2A.ATM.LIQ.WAT.CNT.PRF', 'atmosphere_liquid_water_content', 'azimuth angle', 'g m-2').outerHTML);
     $('#HATPRO #profile ul li').first().addClass('highlight');
 
     $(".navmenu#timeseries li").each(function(index) {
         $(this).on("click", switchHighlight);
-        $(this).on("click", {target: '#HATPRO_1D'}, plotData.plot_time);
+        $(this).on("click", {target: '#HATPRO_1D', campaign: 'HEADS', date: '2014-12-7'}, plotData.plot_time);
       });
 
     $(".navmenu#profile li").each(function(index) {
         $(this).on("click", switchHighlight);
-        $(this).on("click", plotData.plot_contour);
+        $(this).on("click", {target: '#HATPRO_2D'}, plotData.plot_contour);
       });
 
     $(".navmenu li a").each(function() {
