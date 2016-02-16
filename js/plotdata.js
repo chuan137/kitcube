@@ -303,8 +303,8 @@ function plot_contour(event) {
         console.log('colorbar', cntDataset);
         console.log(cntDataset.length);
 
-        var plot1 = $.plot("#plot2d", dataset, options_left);
-        var plot2 = $.plot("#plotColorBar", cntDataset, options_right);
+        var plot1 = $.plot("#HATPRO_2D", dataset, options_left);
+        var plot2 = $.plot("#HATPRO_2D_ColorBar", cntDataset, options_right); 
 
         var canvas1 = plot1.getCanvas();
         var canvas2 = plot2.getCanvas();
