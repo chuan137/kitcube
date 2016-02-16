@@ -38,12 +38,6 @@ function plot_time(event) {
     var timestamp = utc_start_of_day_timestamp(event.data.date);
     var data_file = ['hatpro_time', event.data.campaign, id,  timestamp].join('_') + '.json';
 
-    console.log(id);
-    console.log(title);
-    console.log(panelname, timekey);
-    console.log(targetdiv, targetdivwidth, unit);
-    console.log(data_file);
-
     $.ajax({
         url: 'cache/' + data_file,
         method: 'post',
@@ -122,22 +116,24 @@ function plot_time(event) {
     });
 }
 
-function plot_contour() {
+function plot_contour(event) {
     var panelname = $(this).parents("div .ui-widget-content").attr('id');
-    var time_choice = $('#' + panelname + ' input[type=radio]:checked').val();
     var unit = $(this).attr('unit');
     var unit2 = $(this).attr('unit2');
     var title = $(this).attr('title');
+    var id = $(this).attr('id');
+    var targetdiv = event.data.target;
+    var targetdivwidth = parseFloat($(targetdiv).css('width'));
 
+    var timestamp = utc_start_of_day_timestamp(event.data.date);
+    var data_file = ['hatpro_contour', event.data.campaign, id,  timestamp].join('_') + '.json';
+ 
     $.ajax({
-        url: "cache/" + panelname + "." +  $(this).attr('id') + "." + time_choice + ".json",
-        method: "post",
-        dataType: "json",
-        data: {time_choice: time_choice, id: $(this).attr('id')},
-        success: plotdata2
-    });
+        url: 'cache/' + data_file,
+        method: 'post',
+        dataType: 'json'
+    }).done(function (data) {
 
-    function plotdata2(data) {
         var d0 = new Date(data["xmin"]*1000);
         var dmin = Date.UTC(d0.getUTCFullYear(), d0.getUTCMonth(), d0.getUTCDate(), 0, 0, 0);
         var dmax = dmin + 86400000;
@@ -324,7 +320,7 @@ function plot_contour() {
         var img = canvas3.toDataURL("img/png");
         $('div #'+panelname).data('img2', img);
         $('div #'+panelname).data('title2', title);
-  }
+  });
 }
 
 exports.plot_time = plot_time;

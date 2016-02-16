@@ -50,7 +50,7 @@ module.exports = function() {
 
     $(".navmenu#profile li").each(function(index) {
         $(this).on("click", switchHighlight);
-        $(this).on("click", {target: '#HATPRO_2D'}, plotData.plot_contour);
+        $(this).on("click", {target: '#HATPRO_2D', campaign: 'HEADS', date: '2014-12-7'}, plotData.plot_contour);
       });
 
     $(".navmenu li a").each(function() {
