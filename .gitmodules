@@ -1,0 +1,3 @@
+[submodule "python/adeireader"]
+	path = python/adeireader
+	url = https://github.com/chuan137/adeireader.git
