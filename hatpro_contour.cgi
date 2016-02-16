@@ -27,9 +27,6 @@ def get_contour(servername, sensorname, date=None):
     groupname, sensor_readable_name, axis2_length = read_sensor_config(config_sensor, sensorname)
     axis2_unit, axis2_value = read_sensor_axis2(config_sensor, sensorname)
 
-    print adeihost, adeiserver, dbname
-    print groupname, sensor_readable_name, axis2_length
-
     # initialize adei
     adei = ADEIReader(adeihost, adeiserver, dbname)
     if groupname not in adei.sensors:
