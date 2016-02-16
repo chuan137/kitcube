@@ -246,7 +246,7 @@ function plot_contour(event) {
     var ymin = colorbar_val[0];
     var ymax = colorbar_val[colorbar_val.length-1];
 
-    console.log(colorbar, colorbar_val);
+    // console.log(colorbar, colorbar_val);
 
     var cntrArr = []; //last points
     var tempObj = {
@@ -300,8 +300,8 @@ function plot_contour(event) {
           }
         }
 
-        console.log('colorbar', cntDataset);
-        console.log(cntDataset.length);
+        // console.log('colorbar', cntDataset);
+        // console.log(cntDataset.length);
 
         var plot1 = $.plot("#HATPRO_2D", dataset, options_left);
         var plot2 = $.plot("#HATPRO_2D_ColorBar", cntDataset, options_right); 
