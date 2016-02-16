@@ -28,6 +28,17 @@ def read_sensor_config(configfile, sensorname):
             n = 1
         return g, m, n
 
+def read_sensor_axis2(configfile, sensorname):
+
+    config = ConfigParser.ConfigParser()
+    config.read(configfile)
+
+    if config.has_section(sensorname):
+        u = config.get(sensorname, 'axis2_unit')
+        v = config.get(sensorname, 'axis2_value')
+        return u, map(float, v.split(','))
+
+
 #
 # def parseConfig(configfile, sensor_):
 #     # read server and sensor info from configuration
