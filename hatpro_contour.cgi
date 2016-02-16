@@ -17,7 +17,7 @@ import matplotlib.cm as cm
 config_server = './config/server.ini'
 config_sensor = './config/hatpro.ini'
 output_path = './cache'
-fname_tmpl = 'hatpro_time_{servername}_{sensorname}_{timestamp}.json'
+fname_tmpl = 'hatpro_contour_{servername}_{sensorname}_{timestamp}.json'
 
 
 def get_contour(servername, sensorname, date=None):
