@@ -116,6 +116,7 @@ function plot_contour(event) {
     var colorBarDiv = event.data.colorBarDiv;
 
     $(plotDiv).html('');
+    $(colorBarDiv).html('');
  
     $.ajax({
         url: 'cache/' + data_file,
@@ -290,7 +291,7 @@ function plot_contour(event) {
         }
 
         var plot1 = $.plot(plotDiv, dataset, options_left);
-        var plot2 = $.plot(colroBarDiv, cntDataset, options_right); 
+        var plot2 = $.plot(colorBarDiv, cntDataset, options_right); 
 
         var canvas1 = plot1.getCanvas();
         var canvas2 = plot2.getCanvas();
