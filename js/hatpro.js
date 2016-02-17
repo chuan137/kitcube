@@ -62,8 +62,8 @@ module.exports = function() {
       $(".highlight").click();
     }); 
 
-    $(function() {
-      $(".highlight").click();
-    }); 
+    // $(function() {
+    //   $(".highlight").click();
+    // }); 
 };
 

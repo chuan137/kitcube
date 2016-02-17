@@ -27,16 +27,17 @@ function utc_start_of_day_timestamp(now) {
 }
 
 function plot_time(event) {
-    var panelname = $(this).parents('div .ui-widget-content').attr('id');
-    var timekey = $('#' + panelname + ' input[type=radio]:checked').val();
+    var moduleName = $(this).parents('div .ui-widget-content').attr('id');
     var id = $(this).attr('id');
     var title = $(this).attr('title');
-    var targetdiv = event.data.target;
-    var targetdivwidth = parseFloat($(targetdiv).css('width'));
     var unit = $(this).attr('unit');
 
     var timestamp = utc_start_of_day_timestamp(event.data.date);
     var data_file = ['hatpro_time', event.data.campaign, id,  timestamp].join('_') + '.json';
+    var targetdiv = event.data.target;
+    var targetdivwidth = parseFloat($(targetdiv).css('width'));
+
+    $(targetdiv).html('');
 
     $.ajax({
         url: 'cache/' + data_file,
@@ -44,8 +45,8 @@ function plot_time(event) {
         dataType: 'json'
     }).done(function (data) {
 
-	var timestamp = data.timestamp;
-	var values = data.data;
+        var timestamp = data.timestamp;
+        var values = data.data;
 
         var factor = Math.floor(timestamp.length/targetdivwidth/3 + 0.5);
         if (factor == 0) factor = 1;
@@ -111,22 +112,24 @@ function plot_time(event) {
         var canvas = newplot.getCanvas();
         var img = canvas.toDataURL("img/png");
 
-        $('div #'+panelname).data('img1', img);
-        $('div #'+panelname).data('title1', title);
+        $('div #'+moduleName).data('img1', img);
+        $('div #'+moduleName).data('title1', title);
     });
 }
 
 function plot_contour(event) {
-    var panelname = $(this).parents("div .ui-widget-content").attr('id');
+    var moduleName = $(this).parents("div .ui-widget-content").attr('id');
     var unit = $(this).attr('unit');
     var unit2 = $(this).attr('unit2');
     var title = $(this).attr('title');
     var id = $(this).attr('id');
-    var targetdiv = event.data.target;
-    var targetdivwidth = parseFloat($(targetdiv).css('width'));
 
     var timestamp = utc_start_of_day_timestamp(event.data.date);
     var data_file = ['hatpro_contour', event.data.campaign, id,  timestamp].join('_') + '.json';
+    var targetdiv = event.data.target;
+    var targetdivwidth = parseFloat($(targetdiv).css('width'));
+
+    $(targetdiv).html('');
  
     $.ajax({
         url: 'cache/' + data_file,
@@ -318,8 +321,8 @@ function plot_contour(event) {
         ctx3.drawImage(canvas2, 700, 10);
 
         var img = canvas3.toDataURL("img/png");
-        $('div #'+panelname).data('img2', img);
-        $('div #'+panelname).data('title2', title);
+        $('div #'+moduleName).data('img2', img);
+        $('div #'+moduleName).data('title2', title);
   });
 }
 
