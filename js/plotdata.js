@@ -34,10 +34,10 @@ function plot_time(event) {
 
     var timestamp = utc_start_of_day_timestamp(event.data.date);
     var data_file = ['hatpro_time', event.data.campaign, id,  timestamp].join('_') + '.json';
-    var targetdiv = event.data.target;
-    var targetdivwidth = parseFloat($(targetdiv).css('width'));
+    var plotDiv = event.data.div;
+    var plotWidth = parseFloat($(plotDiv).css('width'));
 
-    $(targetdiv).html('');
+    $(plotDiv).html('');
 
     $.ajax({
         url: 'cache/' + data_file,
@@ -48,7 +48,7 @@ function plot_time(event) {
         var timestamp = data.timestamp;
         var values = data.data;
 
-        var factor = Math.floor(timestamp.length/targetdivwidth/3 + 0.5);
+        var factor = Math.floor(timestamp.length/plotWidth/3 + 0.5);
         if (factor == 0) factor = 1;
 
         var dataset = [];
@@ -94,24 +94,10 @@ function plot_time(event) {
             },
         }
 
-        var newplot = $.plot(targetdiv, dataset, options);
-
-        /*
-        var divholder = document.createElement('div');
-        var divelement = document.createElement('div');
-        divelement.style.width=600+'px';
-        divelement.style.height=300+'px';
-        var title = document.createElement('p');
-        title.innerHTML = 'abc';
-        divholder.appendChild(title);
-        divholder.appendChild(divelement);
-        var printversion = $.plot(divelement, dataset, options);
-        console.log(printversion);
-        */
+        var newplot = $.plot(plotDiv, dataset, options);
 
         var canvas = newplot.getCanvas();
         var img = canvas.toDataURL("img/png");
-
         $('div #'+moduleName).data('img1', img);
         $('div #'+moduleName).data('title1', title);
     });
@@ -126,10 +112,10 @@ function plot_contour(event) {
 
     var timestamp = utc_start_of_day_timestamp(event.data.date);
     var data_file = ['hatpro_contour', event.data.campaign, id,  timestamp].join('_') + '.json';
-    var targetdiv = event.data.target;
-    var targetdivwidth = parseFloat($(targetdiv).css('width'));
+    var plotDiv = event.data.div;
+    var colorBarDiv = event.data.colorBarDiv;
 
-    $(targetdiv).html('');
+    $(plotDiv).html('');
  
     $.ajax({
         url: 'cache/' + data_file,
@@ -303,11 +289,8 @@ function plot_contour(event) {
           }
         }
 
-        // console.log('colorbar', cntDataset);
-        // console.log(cntDataset.length);
-
-        var plot1 = $.plot("#HATPRO_2D", dataset, options_left);
-        var plot2 = $.plot("#HATPRO_2D_ColorBar", cntDataset, options_right); 
+        var plot1 = $.plot(plotDiv, dataset, options_left);
+        var plot2 = $.plot(colroBarDiv, cntDataset, options_right); 
 
         var canvas1 = plot1.getCanvas();
         var canvas2 = plot2.getCanvas();

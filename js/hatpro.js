@@ -45,12 +45,12 @@ module.exports = function() {
 
     $(".navmenu#timeseries li").each(function(index) {
         $(this).on("click", switchHighlight);
-        $(this).on("click", {target: '#HATPRO_1D', campaign: 'HEADS', date: '2014-12-7'}, plotData.plot_time);
+        $(this).on("click", {div: '#HATPRO_1D', campaign: 'HEADS', date: '2014-12-7'}, plotData.plot_time);
       });
 
     $(".navmenu#profile li").each(function(index) {
         $(this).on("click", switchHighlight);
-        $(this).on("click", {target: '#HATPRO_2D', campaign: 'HEADS', date: '2014-12-7'}, plotData.plot_contour);
+        $(this).on("click", {div: '#HATPRO_2D', colorBarDiv: '#HATPRO_2D_ColorBar', campaign: 'HEADS', date: '2014-12-7'}, plotData.plot_contour);
       });
 
     $(".navmenu li a").each(function() {
