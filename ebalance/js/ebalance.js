@@ -24,7 +24,8 @@ function switchHighlight() {
         
 module.exports = function() {
 
-    $('#EBALANCE #timeseries ul').append(sensor('PYG_T_BOT_Avg', 'some sensor', 'some unit').outerHTML);
+    $('#EBALANCE #timeseries ul').append(sensor('PYG_T_BOT_AVG', 'some sensor', 'some unit').outerHTML);
+    $('#EBALANCE #timeseries ul').append(sensor('INK_G_INKW_AVG', 'some sensor', 'some unit').outerHTML);
 
     $(".navmenu#timeseries li").each(function(index) {
         $(this).on("click", switchHighlight);

@@ -32,7 +32,7 @@ function plot_time(event) {
     var unit = $(this).attr('unit');
 
     var timestamp = utc_start_of_day_timestamp(event.data.date);
-    var data_file = ['hatpro_time', event.data.campaign, id,  timestamp].join('_') + '.json';
+    var data_file = ['TimeSeries', event.data.campaign, id,  timestamp].join('_') + '.json';
     var plotDiv = event.data.div;
     var plotWidth = parseFloat($(plotDiv).css('width'));
 

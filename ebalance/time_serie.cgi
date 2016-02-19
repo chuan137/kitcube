@@ -15,7 +15,7 @@ basepath = os.path.dirname(__file__)
 config_server = os.path.join(basepath, '../config/server.ini')
 config_sensor = os.path.join(basepath, '../config/ebalance.ini')
 output_path = os.path.join(basepath, './cache')
-fname_tmpl = 'hatpro_time_{servername}_{sensorname}_{timestamp}.json'
+fname_tmpl = 'TimeSeries_{servername}_{sensorname}_{timestamp}.json'
 
 
 def get_time_series(servername, sensorname, date=None):
@@ -78,10 +78,7 @@ if __name__ == "__main__":
     try:
         sensor = reqparams["sensor"].value
     except KeyError:
-        sensor = 'L2A.ATM.WAT.VAP.CNT'
-        sensor = 'L2A.ATM.LIQ.WAT.CNT'
-        sensor = 'L1B.BRIGHT.TEMP.IR'
-        sensor = 'L1B.BRIGHT.TEMP'
+        sensor = 'PYG_T_BOT_AVG'
 
     # date format: '2014-12-6'
     try:

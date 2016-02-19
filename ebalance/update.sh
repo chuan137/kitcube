@@ -26,9 +26,8 @@ arguments="server=${server}&date=${date}"
 
 #hatpro_time
 script="${path}/time_serie.cgi"
-sensors='PYG_T_BOT_AVG'
+sensors='PYG_T_BOT_AVG INK_G_INKW_AVG'
 for s in $sensors; do
   arg="${arguments}&sensor=${s}"
-  echo $arg
   echo -n $arg | REQUEST_METHOD='POST' python $script
 done
