@@ -34,6 +34,8 @@ def get_content(servername, sensorname, date=None):
     if groupname not in adei.sensors:
         adei.update_sensor_list(groupname)
 
+    sensorfullname = '{} {}'.format(sensorname, sensor_readable_name)
+
     # set time window for the whole day, either from give date,
     # or the last available day
     if date:
@@ -48,14 +50,13 @@ def get_content(servername, sensorname, date=None):
         window = '%d-%d' % (ts_0, laststamp)
 
     # query data
-    sensorname += ' ' + sensor_readable_name
-    sensor_list = [sensorname, 'L2A.ELEVATION.ANGLE elevation_angle', 'L2A.AZIMUTH.ANGLE azimuth_angle']
+    sensor_list = [sensorfullname, 'L2A.ELEVATION.ANGLE elevation_angle', 'L2A.AZIMUTH.ANGLE azimuth_angle']
     fetched = adei.query_data(groupname, sensor_list, window=window, resample=60)
 
     time = fetched['timestamp']
     elevation = map(float, fetched['L2A.ELEVATION.ANGLE elevation_angle'])
     azimuth = map(int, fetched['L2A.AZIMUTH.ANGLE azimuth_angle'])
-    data = map(float, fetched[sensorname])
+    data = map(float, fetched[sensorfullname])
 
     mask1 =   np.array(elevation) != 90.0
 
@@ -77,6 +78,9 @@ def get_content(servername, sensorname, date=None):
         elevation = list(itertools.compress(elevation, mask2))
         time = list(itertools.compress(time, mask2))
         data = list(itertools.compress(data, mask2))
+
+    if len(data) == 0:
+        return
 
     group_azimuth = []
     group_time = [] 
