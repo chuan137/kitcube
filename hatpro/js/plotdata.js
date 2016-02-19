@@ -80,14 +80,17 @@ function plot_time(event) {
                 axisLabelPadding: 16,
                 axisLabelFontSizePixels: 16,
                 axisLabelFontFamily: 'Arial',
-                axisLabelColour: 'black',
+                axisLabelColour: 'white',
                 axisLabel: 'UTC Time   on   ' + formatDate(new Date(dmin)),
+                tickColor: '#666'
             },
             yaxis: {
                 labelWidth: 40,
                 axisLabelUseCanvas: true,
                 axisLabelFontFamily: 'Arial',
-                axisLabel: '[ ' + unit + ' ]'
+                axisLabelColour: 'white',
+                axisLabel: '[ ' + unit + ' ]',
+                tickColor: '#666'
             },
             series: {
                 shadowSize: 0,
@@ -149,7 +152,7 @@ function plot_contour(event) {
               axisLabelPadding: 16,
               axisLabelFontSizePixels: 16,
               axisLabelFontFamily: 'Arial',
-              axisLabelColour: 'black',
+              axisLabelColour: 'white',
               axisLabel: 'UTC Time   on   ' + formatDate(new Date(dmin)),
           },
           yaxis: { 
@@ -158,6 +161,7 @@ function plot_contour(event) {
               labelWidth: 40,
               axisLabelUseCanvas: true,
               axisLabelFontFamily: 'Arial',
+              axisLabelColour: 'white',
               axisLabel: '[ ' + unit + ' ]'
           },
           grid: { 
@@ -275,12 +279,14 @@ function plot_contour(event) {
               axisLabelUseCanvas: true,
               axisLabelFontSizePixels: 12,
               axisLabelFontFamily: 'Arial',
+              axisLabelColour: 'white'
           },
           yaxis: { 
               min: ymin, 
               max: ymax,
               position: "right",
               axisLabelUseCanvas: true,
+              axisLabelColour: 'white',
               ticks: 10
           },
           grid: { 
