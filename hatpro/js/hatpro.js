@@ -46,14 +46,17 @@ module.exports = function() {
     $('#HATPRO #day-minus').click( function() {
         displayDay = new Date(displayDay.getTime() - 86400*1000);
         $('#HATPRO #today').html(getUTCDateText(displayDay));
+        $('#HATPRO .highlight').click()
     });
     $('#HATPRO #day-plus').on("click", function() {
         displayDay = new Date(displayDay.getTime() + 86400*1000);
         $('#HATPRO #today').html(getUTCDateText(displayDay));
+        $('#HATPRO .highlight').click()
     });
     $('#HATPRO #day-last').on("click", function() {
         displayDay = today;
         $('#HATPRO #today').html(getUTCDateText(today));
+        $('#HATPRO .highlight').click()
     });
 
     $('#HATPRO #timeseries ul').append(sensor('L2A.ATM.WAT.VAP.CNT', 'atmosphere_water_vapor_content', 'kg m-2').outerHTML);
@@ -82,12 +85,11 @@ module.exports = function() {
        $(this).attr('title', $(this).parent().attr('id'));
       });
 
-    $("#radiotime input").click(function(){ 
-      var panelname = $(this).parents("div .ui-widget-content").attr('id');
-      $(".highlight").click();
-    }); 
+//    $("#radiotime input").click(function(){ 
+//      var panelname = $(this).parents("div .ui-widget-content").attr('id');
+//      $(".highlight").click();
+//    }); 
 
-    
 
     // $(function() {
     //   $(".highlight").click();
