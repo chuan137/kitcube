@@ -2,24 +2,28 @@
 # Author: Chuan Miao
 # Date: 2016.2.19
 #
-# ./update.sh [date]
+# ./update.sh [-s campaign] [-t date]
 #
 # [date] in the format of 'yyyy-mm-dd'. If not specified, 
 # the current date is used.
 
 
 server='HEADS'
+date=$(date +%Y-%m-%d)
 
-if [ -n "$1" ]; then
-  date=$1
-else
-  date=$(date +%Y-%m-%d)
-fi
+while getopts s:t: opt; do
+  case $opt in
+    s)
+      server=$OPTARG
+      ;;
+    t)
+      date=$OPTARG
+   esac
+done
+
 
 path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 arguments="server=${server}&date=${date}"
-
-echo $path
 
 #hatpro_time
 script="${path}/hatpro_time.cgi"
