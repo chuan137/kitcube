@@ -1,5 +1,4 @@
 var plotData = require('./plotdata');
-var Base64 = require('./base64');
 
 function sensor(id, name, unit, unit2) {
     var e = document.createElement('li');
@@ -15,12 +14,6 @@ function sensor(id, name, unit, unit2) {
     return e;
 }
 
-function updateData(script, id ,date) {
-    $.ajax({
-        url: 'browserify/python/hatpro/'+script + '?id='+id + '&date='+date,
-        method: 'post',
-    });
-}
 
 function switchHighlight() {
         $(this).siblings().each(function() {
