@@ -1,4 +1,3 @@
-var Base64 = require('./base64');
 var THREE = require('three');
 
 function formatDate(date) {

@@ -1,5 +1,4 @@
 var plotData = require('./plotdata');
-var Base64 = require('./base64');
 
 function sensor(id, name, unit, unit2) {
     var e = document.createElement('li');
