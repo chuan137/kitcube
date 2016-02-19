@@ -1,4 +1,12 @@
 #!/bin/bash
+# Author: Chuan Miao
+# Date: 2016.2.19
+#
+# ./update.sh [date]
+#
+# [date] in the format of 'yyyy-mm-dd'. If not specified, 
+# the current date is used.
+
 
 server='HEADS'
 

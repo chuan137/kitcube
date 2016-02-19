@@ -108,10 +108,8 @@ if __name__ == "__main__":
     try:
         sensor = reqparams["sensor"].value
     except KeyError:
-        sensor = 'L2A.ATM.WAT.VAP.CNT'
-        sensor = 'L2A.ATM.LIQ.WAT.CNT'
-        sensor = 'L1B.BRIGHT.TEMP.IR'
-        sensor = 'L1B.BRIGHT.TEMP'
+        sensor = 'L2C.AIR.POT.TEM.PRF'
+        sensor = 'L2C.REL.HUM.PRF'
 
     try:
         date = reqparams["date"].value
@@ -122,4 +120,3 @@ if __name__ == "__main__":
 
     sys.exit()
 
-# vim:autoindent
