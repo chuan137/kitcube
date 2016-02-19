@@ -52,6 +52,7 @@ module.exports = function() {
         $('#HATPRO #today').html(getUTCDateText(displayDay));
     });
     $('#HATPRO #day-last').on("click", function() {
+        displayDay = today;
         $('#HATPRO #today').html(getUTCDateText(today));
     });
 
