@@ -1,9 +1,10 @@
 #!/usr/bin/env python
+import sys
+sys.path.insert(0, '../')
 import matplotlib as mpl
 mpl.use('Agg')
 
 import os
-import sys
 import cgi
 import cgitb
 import json
@@ -14,8 +15,8 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
 
-config_server = './config/server.ini'
-config_sensor = './config/hatpro.ini'
+config_server = '../config/server.ini'
+config_sensor = '../config/hatpro.ini'
 output_path = './cache'
 fname_tmpl = 'hatpro_contour_{servername}_{sensorname}_{timestamp}.json'
 
@@ -56,6 +57,10 @@ def get_contour(servername, sensorname, date=None):
     fetched = adei.query_data(groupname, sensorfullname, window=window, resample=10)
     time = fetched['timestamp']
     data = [ map(float, fetched[i]) for i in sensorfullname ]
+
+    # check data
+    if len(time) == 0:
+        sys.exit(0)
 
     # generate contour using matplotlib plotting function
     colormap = cm.YlGnBu
@@ -116,3 +121,5 @@ if __name__ == "__main__":
     get_contour(server, sensor, date)
 
     sys.exit()
+
+# vim:autoindent

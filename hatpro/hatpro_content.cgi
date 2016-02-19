@@ -1,9 +1,10 @@
 #!/usr/bin/env python
+import sys
+sys.path.insert(0, '../')
 import matplotlib as mpl
 mpl.use('Agg')
 
 import os
-import sys
 import cgi
 import cgitb
 import json
@@ -16,8 +17,8 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
 
-config_server = './config/server.ini'
-config_sensor = './config/hatpro.ini'
+config_server = '../config/server.ini'
+config_sensor = '../config/hatpro.ini'
 output_path = './cache'
 fname_tmpl = 'hatpro_content_{servername}_{sensorname}.PRF_{timestamp}.json'
 
