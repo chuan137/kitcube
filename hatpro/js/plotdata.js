@@ -31,7 +31,7 @@ function plot_time(event) {
     var title = $(this).attr('title');
     var unit = $(this).attr('unit');
 
-    var timestamp = utc_start_of_day_timestamp(event.data.date);
+    var timestamp = utc_start_of_day_timestamp($(event.data.dateDiv).html());
     var data_file = ['hatpro_time', event.data.campaign, id,  timestamp].join('_') + '.json';
     var plotDiv = event.data.div;
     var plotWidth = parseFloat($(plotDiv).css('width'));
@@ -112,7 +112,7 @@ function plot_contour(event) {
     var title = $(this).attr('title');
     var id = $(this).attr('id');
 
-    var timestamp = utc_start_of_day_timestamp(event.data.date);
+    var timestamp = utc_start_of_day_timestamp($(event.data.dateDiv).html());
     var data_file = ['hatpro_contour', event.data.campaign, id,  timestamp].join('_') + '.json';
     var plotDiv = event.data.div;
     var colorBarDiv = event.data.colorBarDiv;

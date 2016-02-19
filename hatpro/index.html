@@ -31,10 +31,21 @@
         .navmenu li.highlight a{
          font-weight:bold; color:#ff0084; background:#fff;
         }
+        #buttons {
+         margin-bottom:10px; padding:3px 0px 1px 0px; font-size: 85%; text-align: right; color: #eee;
+        }
     </style>
 
     <div class="ui-widget-content" id="HATPRO">
     <div class="leftcol">
+
+     <div id="buttons">
+        <button id="day-minus">&lt;</button>
+        &nbsp;<span id="today">2014-12-07</span>&nbsp;
+        <button id="day-plus">&gt;</button>
+        <button id="day-last">&gt;&gt;</button>
+    </div>
+
       <div class="navmenu" id="timeseries">
       <b>&nbsp;Time Series</b>
       <ul></ul>
