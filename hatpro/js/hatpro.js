@@ -95,24 +95,39 @@ module.exports = function() {
     //   $(".highlight").click();
     // }); 
 
-    $('#HATPRO #printbutton').button();
-    $('#HATPRO #printbutton').click(function()  {
-      var img1 = $(this).parents("div .ui-widget-content").data('img1');
-      var img2 = $(this).parents("div .ui-widget-content").data('img2');
-      var title1 = $(this).parents("div .ui-widget-content").data('title1');
-      var title2 = $(this).parents("div .ui-widget-content").data('title2');
+    $('#HATPRO #print-button').on("click", function()  {
+      var img1 = $('div #HATPRO').data('img1');
+      var img2 = $('div #HATPRO').data('img2');
+      var title1 = $('div #HATPRO').data('title1');
+      var title2 = $('div #HATPRO').data('title2');
 
       w = window.open();
-      w.document.write("<div style='text-align: center'><b>");
-      w.document.write(title1);
-      w.document.write("</b></div>");
+      w.document.write("<div style='width: 800px'>");
+      w.document.write("<div style='text-align: center; margin: 20px auto'>");
+      w.document.write("<b>"+title1+"</b></div>");
       w.document.write("<img src='"+img1+"'/>");
-      w.document.write("<br><br><div style='text-align: center'><b>");
-      w.document.write(title2);
-      w.document.write("</b></div>");
+      w.document.write("<br/><br/>");
+      w.document.write("<div style='text-align: center; margin: 20px auto'>");
+      w.document.write("<b>"+title2+"</b></div>");
       w.document.write("<img src='"+img2+"'/>");
-      w.print();
-      w.close();
+      w.document.write("</div>");
+
+      // chrome bug; wait then print
+      var is_chrome = Boolean(w.chrome);
+
+      if (is_chrome) {
+        setTimeout(function() {
+          w.document.close();
+          w.focus();
+          w.print();
+          w.close();
+        }, 250);
+      } else {
+          w.document.close();
+          w.focus();
+          w.print();
+          w.close();
+      }
     }); 
 };
 
