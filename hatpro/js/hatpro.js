@@ -85,15 +85,9 @@ module.exports = function() {
        $(this).attr('title', $(this).parent().attr('id'));
       });
 
-//    $("#radiotime input").click(function(){ 
-//      var panelname = $(this).parents("div .ui-widget-content").attr('id');
-//      $(".highlight").click();
-//    }); 
-
-
-    // $(function() {
-    //   $(".highlight").click();
-    // }); 
+    $(function() {
+      $("#HATPRO .highlight").click();
+    }); 
 
     $('#HATPRO #print-button').on("click", function()  {
       var img1 = $('div #HATPRO').data('img1');
