@@ -94,5 +94,25 @@ module.exports = function() {
     // $(function() {
     //   $(".highlight").click();
     // }); 
+
+    $('#HATPRO #printbutton').button();
+    $('#HATPRO #printbutton').click(function()  {
+      var img1 = $(this).parents("div .ui-widget-content").data('img1');
+      var img2 = $(this).parents("div .ui-widget-content").data('img2');
+      var title1 = $(this).parents("div .ui-widget-content").data('title1');
+      var title2 = $(this).parents("div .ui-widget-content").data('title2');
+
+      w = window.open();
+      w.document.write("<div style='text-align: center'><b>");
+      w.document.write(title1);
+      w.document.write("</b></div>");
+      w.document.write("<img src='"+img1+"'/>");
+      w.document.write("<br><br><div style='text-align: center'><b>");
+      w.document.write(title2);
+      w.document.write("</b></div>");
+      w.document.write("<img src='"+img2+"'/>");
+      w.print();
+      w.close();
+    }); 
 };
 
