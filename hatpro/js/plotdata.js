@@ -56,6 +56,8 @@ function plot_time(event) {
           var temp = [];
           for (var i = 0; i < timestamp.length; i+=factor) {
               temp.push([timestamp[i]*1000, values[w][i]]);
+              if (i < timestamp.length - 1 && timestamp[i+1] - timestamp[i] > 300)
+                  temp.push(null);
           }
           dataset.push(temp);
         }
