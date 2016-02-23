@@ -20,6 +20,8 @@ config_sensor = '../config/hatpro.ini'
 output_path = './cache'
 fname_tmpl = 'hatpro_contour_{servername}_{sensorname}_{timestamp}.json'
 
+def partition(alist, indices):
+    return [alist[i:j] for i, j in zip([0]+indices, indices+[None])]
 
 def get_contour(servername, sensorname, date=None):
 
@@ -58,27 +60,37 @@ def get_contour(servername, sensorname, date=None):
     time = fetched['timestamp']
     data = [ map(float, fetched[i]) for i in sensorfullname ]
 
+    breakpts = []
+    for i, t in enumerate(time):
+        if i > 0:
+            if (t - time[i-1]) > 1200:
+                breakpts.append(i)
+    
+    time_segs = partition(time, breakpts)
+    data = [ partition(d, breakpts) for d in data ]
+
     # check data
     if len(time) == 0:
         sys.exit(0)
 
     # generate contour using matplotlib plotting function
     colormap = cm.YlGnBu
-    contours = plt.contourf(time, axis2_value, data, 50, cmap=colormap)
-
-    # extract contour paths from generated data
     Paths = []
-    for l, p, c in zip(contours.layers, contours.collections, contours.tcolors):
-        color = mpl.colors.rgb2hex(c[0][:3])
-        Paths.append({'layer': l, 'color': color, 'path': []})
+    for i, t in enumerate(time_segs):
+        contours = plt.contourf(t, axis2_value, [d[i] for d in data], 50, cmap=colormap)
 
-        for path in p.get_paths():
-            for vertex, code in zip(path.vertices, path.codes):
-                if len(Paths[-1]['path']) != 0 and code == 1:
-                    Paths[-1]['path'].append(None)
-                    Paths[-1]['path'].append(vertex.tolist())
-                else:
-                    Paths[-1]['path'].append(vertex.tolist())
+        # extract contour paths from generated data
+        for l, p, c in zip(contours.layers, contours.collections, contours.tcolors):
+            color = mpl.colors.rgb2hex(c[0][:3])
+            Paths.append({'layer': l, 'color': color, 'path': []})
+
+            for path in p.get_paths():
+                for vertex, code in zip(path.vertices, path.codes):
+                    if len(Paths[-1]['path']) != 0 and code == 1:
+                        Paths[-1]['path'].append(None)
+                        Paths[-1]['path'].append(vertex.tolist())
+                    else:
+                        Paths[-1]['path'].append(vertex.tolist())
 
     # pack data in dictionary for json serizable
     processed = { "xmin": time[0], "xmax": time[-1],
