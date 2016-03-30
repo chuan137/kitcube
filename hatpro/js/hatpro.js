@@ -67,8 +67,6 @@ module.exports = function() {
 
     $('#HATPRO #profile ul').append(sensor('L2C.AIR.POT.TEM.PRF', 'air_potential_temperature_profile', 'm', 'K').outerHTML);
     $('#HATPRO #profile ul').append(sensor('L2C.REL.HUM.PRF', 'relative_humidty_profile', 'm', '%').outerHTML);
-    $('#HATPRO #profile ul').append(sensor('L2A.ATM.WAT.VAP.CNT.PRF', 'atmosphere_water_vapor_content', 'azimuth angle', 'kg m-2').outerHTML);
-    $('#HATPRO #profile ul').append(sensor('L2A.ATM.LIQ.WAT.CNT.PRF', 'atmosphere_liquid_water_content', 'azimuth angle', 'g m-2').outerHTML);
     $('#HATPRO #profile ul li').first().addClass('highlight');
 
     $(".navmenu#timeseries li").each(function(index) {
@@ -122,6 +120,6 @@ module.exports = function() {
           w.print();
           w.close();
       }
-    }); 
+    ); 
 };
 
