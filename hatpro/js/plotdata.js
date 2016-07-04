@@ -1,4 +1,5 @@
 var THREE = require('three');
+var filters = require('./filters');
 
 function formatDate(date) {
     var dd = date.getDate()
@@ -21,8 +22,12 @@ function utc_start_of_day_timestamp(now) {
         var month = parseInt(now[1]) - 1;
         var day = parseInt(now[2]);
         var ts = Date.UTC(year, month, day);
-    } 
+    }
     return ts/1000;
+}
+
+var filterLowThreshold = function(x) {
+    return filters.lowThreshold(x, -999);
 }
 
 function plot_time(event) {
@@ -40,12 +45,13 @@ function plot_time(event) {
 
     $.ajax({
         url: 'cache/' + data_file,
-        method: 'post',
+        method: 'get',
         dataType: 'json'
     }).done(function (data) {
 
         var timestamp = data.timestamp;
         var values = data.data;
+        values = values.map(filterLowThreshold);
 
         var factor = Math.floor(timestamp.length/plotWidth/3 + 0.5);
         if (factor == 0) factor = 1;
@@ -65,13 +71,13 @@ function plot_time(event) {
         var d0 = new Date(timestamp[0]*1000);
         var dmin = Date.UTC(d0.getUTCFullYear(), d0.getUTCMonth(), d0.getUTCDate(), 0, 0, 0);
         var dmax = dmin + 86400000;
-        var hour = 3600000; 
+        var hour = 3600000;
         var ticks = [];
         for (var i=0; i<=24; i+=3) ticks.push(dmin + i*hour);
 
         var options = {
             canvas: true,
-            xaxis: { 
+            xaxis: {
                 mode: "time",
                 ticks: ticks,
                 min: dmin,
@@ -121,32 +127,32 @@ function plot_contour(event) {
 
     $(plotDiv).html('');
     $(colorBarDiv).html('');
- 
+
     $.ajax({
         url: 'cache/' + data_file,
-        method: 'post',
+        method: 'get',
         dataType: 'json'
     }).done(function (data) {
 
         var d0 = new Date(data["xmin"]*1000);
         var dmin = Date.UTC(d0.getUTCFullYear(), d0.getUTCMonth(), d0.getUTCDate(), 0, 0, 0);
         var dmax = dmin + 86400000;
-        var hour = 3600000; 
+        var hour = 3600000;
         var ticks = [];
         for (var i=0; i<=24; i+=3) ticks.push(dmin + i*hour);
 
         var options_left = {
             canvas: true,
-          series: { 
+          series: {
               lines: {
                   lineWidth: 1
-              }, 
-              shadowSize: 0.5, 
+              },
+              shadowSize: 0.5,
           },
-          xaxis: { 
+          xaxis: {
               mode: 'time',
-              min: dmin, 
-              max: dmax, 
+              min: dmin,
+              max: dmax,
               ticks: ticks,
               timeformat: "%H:%M",
               axisLabelUseCanvas: true,
@@ -156,8 +162,8 @@ function plot_contour(event) {
               axisLabelColour: '#666',
               axisLabel: 'UTC Time   on   ' + formatDate(new Date(dmin)),
           },
-          yaxis: { 
-              min: data["ymin"], 
+          yaxis: {
+              min: data["ymin"],
               max: data["ymax"],
               labelWidth: 40,
               axisLabelUseCanvas: true,
@@ -165,23 +171,23 @@ function plot_contour(event) {
               axisLabelColour: '#666',
               axisLabel: '[ ' + unit + ' ]'
           },
-          grid: { 
-              margin: {} 
+          grid: {
+              margin: {}
           },
-          hooks: { 
-              drawSeries: [fillShape] 
+          hooks: {
+              drawSeries: [fillShape]
           }
         }
 
     var dataset=[];
-    
+
     for (var i = 0; i < data['data'].length; i++) {
         for (var j = 0; j < data['data'][i]["path"].length; j++) {
             if (data['data'][i]["path"][j] != null)
                 data['data'][i]["path"][j][0] *= 1000;
         }
         dataset.push({
-            data: data['data'][i]["path"], 
+            data: data['data'][i]["path"],
             color: data['data'][i]["color"]});
     }
 
@@ -248,7 +254,7 @@ function plot_contour(event) {
         data: [],
         color: "",
     };
-    
+
     var cntDataset = [];
     for (var i=0; i<data['data'].length; i++) {
         cntDataset.push({
@@ -261,12 +267,12 @@ function plot_contour(event) {
 
         var options_right = {
             canvas: true,
-          series: { 
+          series: {
               lines:{
                   fillColor: {colors: colorbar},
                   fill: true,
-              }, 
-              shadowSize: 0, 
+              },
+              shadowSize: 0,
           },
           xaxis: {
               axisLabel:  unit2,
@@ -282,23 +288,23 @@ function plot_contour(event) {
               axisLabelFontFamily: 'Arial',
               axisLabelColour: '#666'
           },
-          yaxis: { 
-              min: ymin, 
+          yaxis: {
+              min: ymin,
               max: ymax,
               position: "right",
               axisLabelUseCanvas: true,
               axisLabelColour: '#666',
               ticks: 10
           },
-          grid: { 
-              margin: {left:0, right:0, bottom: 17} 
+          grid: {
+              margin: {left:0, right:0, bottom: 17}
           },
-          hooks: { 
+          hooks: {
           }
         }
 
         var plot1 = $.plot(plotDiv, dataset, options_left);
-        var plot2 = $.plot(colorBarDiv, cntDataset, options_right); 
+        var plot2 = $.plot(colorBarDiv, cntDataset, options_right);
 
         var canvas1 = plot1.getCanvas();
         var canvas2 = plot2.getCanvas();
