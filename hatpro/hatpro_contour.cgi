@@ -38,9 +38,11 @@ def get_contour(servername, sensorname, date=None):
     # when sensor has second axis, generate sensor list <sensorname>.001, ...
     if axis2_length == 1:
         sensorfullname = '{} {}'.format(sensorname, sensor_readable_name)
+        sensorfullname = sensorfullname.strip()
     else:
         sensorfullname = ['{}.{:03d} {}'.format(sensorname, i, sensor_readable_name)
                           for i in range(axis2_length)]
+        sensorfullname = [s.strip() for s in sensorfullname]
 
     # set time window for the whole day, either from give date,
     # or the last available day

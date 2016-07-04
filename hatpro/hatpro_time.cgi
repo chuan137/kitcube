@@ -17,6 +17,8 @@ config_sensor = os.path.join(basepath, './config/hatpro.ini')
 output_path = os.path.join(basepath, './hatpro/cache')
 fname_tmpl = 'hatpro_time_{servername}_{sensorname}_{timestamp}.json'
 
+class CumException(Exception):
+    pass
 
 def get_time_series(servername, sensorname, date=None):
 
@@ -32,9 +34,11 @@ def get_time_series(servername, sensorname, date=None):
     # when sensor has second axis, generate sensor list <sensorname>.001, ...
     if axis2_length == 1:
         sensorfullname = '{} {}'.format(sensorname, sensor_readable_name)
+        sensorfullname = sensorfullname.strip()
     else:
         sensorfullname = ['{}.{:03d} {}'.format(sensorname, i, sensor_readable_name)
                           for i in range(axis2_length)]
+        sensorfullname = [s.strip() for s in sensorfullname]
 
     # set time window for the whole day, either from give date,
     # or the last available day
