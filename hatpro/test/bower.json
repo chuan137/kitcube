@@ -13,7 +13,7 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "!jquery#~2.2.4",
+    "jquery": "jquery#~2.2.4",
     "Flot": "flot#~0.8.3"
   },
   "main": "",
