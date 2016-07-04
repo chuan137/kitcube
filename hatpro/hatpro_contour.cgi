@@ -4,15 +4,16 @@ import os
 import cgi
 import cgitb
 import json
-from python.adeireader import ADEIReader
-from python.adeihelper import start_of_day, utc_timestamp
-from python.hatpro import read_server_config, read_sensor_config, read_sensor_axis2
 import matplotlib as mpl; mpl.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
 basepath = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
 sys.path.insert(0, basepath)
+
+from python.adeireader import ADEIReader
+from python.adeihelper import start_of_day, utc_timestamp
+from python.hatpro import read_server_config, read_sensor_config, read_sensor_axis2
 
 config_server = os.path.join(basepath, './config/server.ini')
 config_sensor = os.path.join(basepath, './config/hatpro.ini')
