@@ -27,6 +27,9 @@ def read_sensor_config(configfile, sensorname):
         except ConfigParser.NoOptionError:
             n = 1
         return g, m, n
+    else:
+        raise Exception('sensorname %s not found in configuration file %s' % (sensorname,
+                                                                              configfile))
 
 def read_sensor_axis2(configfile, sensorname):
 
