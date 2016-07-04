@@ -60,15 +60,28 @@ module.exports = function(campaignName, date) {
         $('#HATPRO .highlight').click()
     });
 
-    $('#HATPRO #timeseries ul').append(sensor('L2PRW.ATM.WAT.VAP.CNT', 'atmosphere_water_vapor_content', 'kg m-2').outerHTML);
-    $('#HATPRO #timeseries ul').append(sensor('L2CLWVI.ATM.LIQ.WAT.CNT', 'atmosphere_liquid_water_content', 'g m-2').outerHTML);
-    $('#HATPRO #timeseries ul').append(sensor('L1TB.BRIGHT.TEMP', 'brightness_temperature', 'K').outerHTML);
-    $('#HATPRO #timeseries ul').append(sensor('L1TB.BRIGHT.TEMP.IR', 'brightness_temperature_IR', 'K').outerHTML);
-    $('#HATPRO #timeseries ul li').first().addClass('highlight');
+    if (campaignName === 'DACCIWA') {
+      $('#HATPRO #timeseries ul').append(sensor('L2PRW.ATM.WAT.VAP.CNT', 'atmosphere_water_vapor_content', 'kg m-2').outerHTML);
+      $('#HATPRO #timeseries ul').append(sensor('L2CLWVI.ATM.LIQ.WAT.CNT', 'atmosphere_liquid_water_content', 'g m-2').outerHTML);
+      $('#HATPRO #timeseries ul').append(sensor('L1TB.BRIGHT.TEMP', 'brightness_temperature', 'K').outerHTML);
+      $('#HATPRO #timeseries ul').append(sensor('L1TB.BRIGHT.TEMP.IR', 'brightness_temperature_IR', 'K').outerHTML);
+      $('#HATPRO #timeseries ul li').first().addClass('highlight');
 
-    $('#HATPRO #profile ul').append(sensor('L2TABL.TEM.PRF', 'air_temperature_profile', 'm', 'K').outerHTML);
-    $('#HATPRO #profile ul').append(sensor('L2HUA.ABS.HUM.PRF', 'absolute_humidty_profile', 'm', '%').outerHTML);
-    $('#HATPRO #profile ul li').first().addClass('highlight');
+      $('#HATPRO #profile ul').append(sensor('L2TABL.TEM.PRF', 'air_temperature_profile', 'm', 'K').outerHTML);
+      $('#HATPRO #profile ul').append(sensor('L2HUA.ABS.HUM.PRF', 'absolute_humidty_profile', 'm', '%').outerHTML);
+      $('#HATPRO #profile ul li').first().addClass('highlight');
+    } else {
+      $('#HATPRO #timeseries ul').append(sensor('L2A.ATM.WAT.VAP.CNT', 'atmosphere_water_vapor_content', 'kg m-2').outerHTML);
+      $('#HATPRO #timeseries ul').append(sensor('L2A.ATM.LIQ.WAT.CNT', 'atmosphere_liquid_water_content', 'g m-2').outerHTML);
+      $('#HATPRO #timeseries ul').append(sensor('L1B.BRIGHT.TEMP', 'brightness_temperature', 'K').outerHTML);
+      $('#HATPRO #timeseries ul').append(sensor('L1B.BRIGHT.TEMP.IR', 'brightness_temperature_IR', 'C').outerHTML);
+      $('#HATPRO #timeseries ul li').first().addClass('highlight');
+
+      $('#HATPRO #profile ul').append(sensor('L2C.AIR.POT.TEM.PRF', 'air_potential_temperature_profile', 'm', 'K').outerHTML);
+      $('#HATPRO #profile ul').append(sensor('L2C.REL.HUM.PRF', 'relative_humidty_profile', 'm', '%').outerHTML);
+      $('#HATPRO #profile ul li').first().addClass('highlight');
+    }
+
 
     $(".navmenu#timeseries li").each(function(index) {
         $(this).on("click", switchHighlight);
