@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 import sys
-sys.path.insert(0, '../')
-
 import os
 import cgi, cgitb
 import numpy as np
@@ -10,11 +8,12 @@ from python.adeireader import ADEIReader
 from python.adeihelper import start_of_day, utc_timestamp
 from python.hatpro import read_server_config, read_sensor_config
 
-basepath = os.path.dirname(__file__)
+basepath = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
+sys.path.insert(0, basepath)
 
-config_server = os.path.join(basepath, '../config/server.ini')
-config_sensor = os.path.join(basepath, '../config/hatpro.ini')
-output_path = os.path.join(basepath, './cache')
+config_server = os.path.join(basepath, './config/server.ini')
+config_sensor = os.path.join(basepath, './config/hatpro.ini')
+output_path = os.path.join(basepath, './hatpro/cache')
 fname_tmpl = 'hatpro_time_{servername}_{sensorname}_{timestamp}.json'
 
 

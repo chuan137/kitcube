@@ -1,9 +1,5 @@
 #!/usr/bin/env python
 import sys
-sys.path.insert(0, '../')
-import matplotlib as mpl
-mpl.use('Agg')
-
 import os
 import cgi
 import cgitb
@@ -11,13 +7,16 @@ import json
 from python.adeireader import ADEIReader
 from python.adeihelper import start_of_day, utc_timestamp
 from python.hatpro import read_server_config, read_sensor_config, read_sensor_axis2
+import matplotlib as mpl; mpl.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
+basepath = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
+sys.path.insert(0, basepath)
 
-config_server = '../config/server.ini'
-config_sensor = '../config/hatpro.ini'
-output_path = './cache'
+config_server = os.path.join(basepath, './config/server.ini')
+config_sensor = os.path.join(basepath, './config/hatpro.ini')
+output_path = os.path.join(basepath, './hatpro/cache')
 fname_tmpl = 'hatpro_contour_{servername}_{sensorname}_{timestamp}.json'
 
 def partition(alist, indices):
