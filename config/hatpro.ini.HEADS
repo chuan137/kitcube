@@ -1,35 +1,35 @@
 [L1B.BRIGHT.TEMP]
 group:		Data_080_RPG_L1B
-name:	        brightness_temperature
+name:
 axis2_unit:     GHz
 axis2_length:   14
 axis2_value:    22.24, 23.04, 23.84, 25.44, 26.24, 27.84, 31.4, 51.26, 52.28, 53.86, 54.94, 56.66, 57.3, 58
 
 [L1B.BRIGHT.TEMP.IR]
 group:		Data_080_RPG_L1B
-name:	        brightness_temperature_ir
+name:
 axis2_unit:     um
 axis2_length:   2
 axis2_value:    12, 11.1
 
 [L2A.ATM.LIQ.WAT.CNT]
 group:		Data_080_RPG_L2A
-name:           atmosphere_liquid_water_content
+name:
 
 [L2A.ATM.WAT.VAP.CNT]
 group:		Data_080_RPG_L2A
-name:	        atmosphere_water_vapor_content
+name:
 
 [L2C.REL.HUM.PRF]
 group:		Data_080_RPG_L2C
-name:           relative_humidity_profile
+name:
 axis2_unit:     m
 axis2_length:   43
 axis2_value:    0, 50, 100, 150, 200, 250, 325, 400, 475, 550, 625, 700, 800, 900, 1000, 1150, 1300, 1450, 1600, 1800, 2000, 2250, 2500, 2750, 3000, 3250, 3500, 3750, 4000, 4250, 4500, 4750, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000 
 
 [L2C.AIR.POT.TEM.PRF]
 group:		Data_080_RPG_L2C
-name:           air_potential_temperature_profile
+name:
 axis2_unit:     m
 axis2_length:   43
 axis2_value:    0, 50, 100, 150, 200, 250, 325, 400, 475, 550, 625, 700, 800, 900, 1000, 1150, 1300, 1450, 1600, 1800, 2000, 2250, 2500, 2750, 3000, 3250, 3500, 3750, 4000, 4250, 4500, 4750, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000

@@ -89,5 +89,6 @@ if __name__ == "__main__":
     except KeyError:
         date = None
 
+    config_sensor = '.'.join([config_sensor, server])
     get_time_series(server, sensor, date)
 

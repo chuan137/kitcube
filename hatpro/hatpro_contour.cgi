@@ -128,6 +128,7 @@ if __name__ == "__main__":
     except KeyError:
         date = None
 
+    config_sensor = '.'.join([config_sensor, server])
     get_contour(server, sensor, date)
 
     sys.exit()
