@@ -1,0 +1,24 @@
+{
+  "name": "xxx",
+  "version": "0.0.0",
+  "authors": [
+    "chuan miao <chuan137@gmail.com>"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "cache",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "!jquery#~2.2.4",
+    "Flot": "flot#~0.8.3"
+  },
+  "main": "",
+  "homepage": "https://github.com/chuan137/kitcube",
+  "description": "",
+  "moduleType": [],
+  "license": "MIT"
+}
