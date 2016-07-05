@@ -62,6 +62,9 @@ def get_contour(servername, sensorname, date=None):
     time = fetched['timestamp']
     data = [ map(float, fetched[i]) for i in sensorfullname ]
 
+    # filter invalid data
+    data = [[y if y > -999 else None for y in x] for x in data ]
+
     breakpts = []
     for i, t in enumerate(time):
         if i > 0:
